@@ -5,7 +5,13 @@ configuration:
   - MinSizeRel
 
 build_script:
-  - mkdir build
-  - cd build
-  - cmake -G "Visual Studio 15 2017 Win64" -DORC_BUILD_VCPKG=ON ..
+  - mkdir build-x64
+  - cd build-x64
+  - cmake -G "Visual Studio 15 2017 Win64" -T v141_xp -DORC_BUILD_VCPKG=ON -DORC_BUILD_APACHE_ORC=ON -DORC_BUILD_PARQUET=ON -DORC_BUILD_SSDEEP=ON -DORC_BUILD_FASTFIND=ON -DORC_BUILD_CHAKRACORE=ON ..
   - cmake --build . -- -maxcpucount
+  - cd ..
+  - mkdir build-x86
+  - cd build-x86
+  - cmake -G "Visual Studio 15 2017" -T v141_xp -DORC_BUILD_VCPKG=ON -DORC_BUILD_APACHE_ORC=ON -DORC_BUILD_PARQUET=ON -DORC_BUILD_SSDEEP=ON -DORC_BUILD_FASTFIND=ON -DORC_BUILD_CHAKRACORE=ON ..
+  - cmake --build . -- -maxcpucount
+
