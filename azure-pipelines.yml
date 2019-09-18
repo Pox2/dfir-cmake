@@ -1,14 +1,20 @@
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=azure-devops&tabs=schema
+
 jobs:
-  - job: vs2017_x86
+  - job: vs2017_x64
+    timeoutInMinutes: 600
     pool:
       vmImage: 'vs2017-win2016'
     steps:
     - script: mkdir build-x64
+      displayName: Make x64 Build Directory
     - task: CMake@1
+      displayName: CMake x64 configuration
       inputs:
         workingDirectory: 'build-x64'
-        cmakeArgs: '-T v141_xp -DORC_BUILD_VCPKG=ON ..'
+        cmakeArgs: '-G "Visual Studio 15 2017 Win64" -T v141_xp -DORC_BUILD_VCPKG=ON ..'
     - task: CMake@1
+      displayName: CMake x64 build
       inputs:
         workingDirectory: 'build-x64'
         cmakeArgs: '--build . --config MinSizeRel -- -maxcpucount'
