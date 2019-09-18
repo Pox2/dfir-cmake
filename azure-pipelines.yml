@@ -1,0 +1,13 @@
+jobs:
+  - job: vs2017_x86
+  pool:
+    vmImage: 'vs2017-win2016'
+  steps:
+  - script: mkdir build-x64
+  - task: CMake@1
+    inputs:
+      workingDirectory: 'build-x64'
+      cmakeArgs: '-T v141_xp -DORC_BUILD_VCPKG=ON ..'
+  - task: CMakeBuild@1
+    workingDirectory: 'build-x64'
+    cmakeArgs: '--build . --config MinSizeRel -- -maxcpucount'
