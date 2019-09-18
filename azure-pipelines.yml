@@ -1,5 +1,7 @@
 # https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=azure-devops&tabs=schema
 
+# TODO: -DORC_BUILD_SQL=ON
+
 jobs:
   - job: vs2017_x64
     timeoutInMinutes: 600
@@ -7,14 +9,33 @@ jobs:
       vmImage: 'vs2017-win2016'
     steps:
     - script: mkdir build-x64
-      displayName: Make x64 Build Directory
+      displayName: Make Build Directory
     - task: CMake@1
-      displayName: CMake x64 configuration
+      displayName: CMake configuration
       inputs:
         workingDirectory: 'build-x64'
-        cmakeArgs: '-G "Visual Studio 15 2017 Win64" -T v141_xp -DORC_BUILD_VCPKG=ON ..'
+        cmakeArgs: '-G "Visual Studio 15 2017 Win64" -T v141_xp -DORC_BUILD_VCPKG=ON -DORC_BUILD_APACHE_ORC=ON -DORC_BUILD_PARQUET=ON -DORC_BUILD_SSDEEP=ON -DORC_BUILD_FASTFIND=ON -DORC_BUILD_CHAKRACORE=ON ..'
     - task: CMake@1
-      displayName: CMake x64 build
+      displayName: CMake build
       inputs:
         workingDirectory: 'build-x64'
+        cmakeArgs: '--build . --config MinSizeRel -- -maxcpucount'
+
+jobs:
+  - job: vs2017_x86
+    timeoutInMinutes: 600
+    pool:
+      vmImage: 'vs2017-win2016'
+    steps:
+    - script: mkdir build-x86
+      displayName: Make Build Directory
+    - task: CMake@1
+      displayName: CMake configuration
+      inputs:
+        workingDirectory: 'build-x86'
+        cmakeArgs: '-G "Visual Studio 15 2017" -T v141_xp -DORC_BUILD_VCPKG=ON -DORC_BUILD_APACHE_ORC=ON -DORC_BUILD_PARQUET=ON -DORC_BUILD_SSDEEP=ON -DORC_BUILD_FASTFIND=ON -DORC_BUILD_CHAKRACORE=ON ..'
+    - task: CMake@1
+      displayName: CMake build
+      inputs:
+        workingDirectory: 'build-x86'
         cmakeArgs: '--build . --config MinSizeRel -- -maxcpucount'
