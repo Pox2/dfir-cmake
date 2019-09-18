@@ -21,7 +21,6 @@ jobs:
         workingDirectory: 'build-x64'
         cmakeArgs: '--build . --config MinSizeRel -- -maxcpucount'
 
-jobs:
   - job: vs2017_x86
     timeoutInMinutes: 600
     pool:
