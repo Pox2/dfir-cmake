@@ -1,0 +1,12 @@
+image:
+  - Visual Studio 2017
+
+platform:
+  - x64
+
+configuration:
+  - MinSizeRel
+
+build_script:
+  - cmake -G "Visual Studio 2017" -DORC_BUILD_VCPKG=ON ..
+  - cmake --build . -- -maxcpucount
